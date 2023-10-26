@@ -1,0 +1,27 @@
+# Node Modules
+node_modules/
+
+# Environment Variables
+.env
+
+# Logs
+*.log
+
+# Audio Files
+*.wav
+*.mp3
+
+# Temporary Files
+*.tmp
+*.swp
+*.swo
+
+# IDE and Editor Files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
