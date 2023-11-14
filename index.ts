@@ -16,7 +16,7 @@ const mic = initializeMicrophone();
 mic.start();
 setupMicrophoneStream(mic);
 
-async function main() {
+export default async function main() {
   try {
     const voiceData = await captureVoiceInput();
     const text = await transcribeVoiceToText(voiceData);
@@ -57,11 +57,11 @@ function setupMicrophoneStream(mic: recorder.Recording) {
     .pipe(fs.createWriteStream('audioData.wav'));
 }
 
-async function captureVoiceInput(): Promise<fs.ReadStream> {
+export async function captureVoiceInput(): Promise<fs.ReadStream> {
   return fs.createReadStream('audioData.wav');
 }
 
-async function transcribeVoiceToText(voiceData: fs.ReadStream): Promise<string> {
+export async function transcribeVoiceToText(voiceData: fs.ReadStream): Promise<string> {
   try {
     const transcription = await openai.audio.transcriptions.create({
       model: "whisper-1",
@@ -73,7 +73,7 @@ async function transcribeVoiceToText(voiceData: fs.ReadStream): Promise<string> 
   }
 }
 
-async function interactWithAssistant(userInput: string): Promise<string | null> {
+export async function interactWithAssistant(userInput: string): Promise<string | null> {
   const systemMessage: OpenAI.ChatCompletionMessage = {
     role: "system",
     content: "You are a Jack-O'-Lantern, a gabby pumpkin, delighting crowds as you sing songs, tell jokes and chat up neighbourhood trick-or-treaters. With family-friendly limericks, rhymes, classic Halloween tales and fully licensed songs such as ‘Ghostbusters’ and ‘Monster Mash.’ You will charm audiences."
@@ -134,7 +134,7 @@ async function interactWithAssistant(userInput: string): Promise<string | null> 
   return response.choices[0].message.content;
 }
 
-async function convertTextToVoice(text: string): Promise<ArrayBuffer> {
+export async function convertTextToVoice(text: string): Promise<ArrayBuffer> {
   try {
     const response = await axios.post('https://api.elevenlabs.io/v1/text-to-speech/mzqE3wliVNT4R5olfLWv', {
       model_id: "eleven_multilingual_v2",
@@ -151,7 +151,7 @@ async function convertTextToVoice(text: string): Promise<ArrayBuffer> {
   }
 }
 
-function playAudioOutput(filePath: string, voiceOutput: ArrayBuffer) {
+export function playAudioOutput(filePath: string, voiceOutput: ArrayBuffer) {
   fs.writeFileSync(filePath, Buffer.from(voiceOutput));
   audioPlayer.play(filePath, (err: Error) => {
     if (err) {
@@ -160,6 +160,6 @@ function playAudioOutput(filePath: string, voiceOutput: ArrayBuffer) {
   });
 }
 
-function handleError(error: any) {
+export function handleError(error: any) {
   console.error(`An error occurred: ${error}`);
 }
