@@ -4,11 +4,26 @@ import dotenv from 'dotenv';
 import fs from "fs";
 import recorder from 'node-record-lpcm16';
 import player from 'play-sound';
+import { exec } from "child_process";
 
 dotenv.config();
 validateEnvVariables();
 
 const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '3', 10);
+
+exec('which sox', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`exec error: ${error}`);
+    return;
+  }
+
+  if (stdout) {
+    console.log(`sox is installed at: ${stdout}`);
+  } else {
+    console.log('sox is not installed or not found in PATH');
+  }
+});
+
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const audioPlayer = player();
 
@@ -16,7 +31,7 @@ const mic = initializeMicrophone();
 mic.start();
 setupMicrophoneStream(mic);
 
-export default async function main() {
+export async function main() {
   try {
     const voiceData = await captureVoiceInput();
     const text = await transcribeVoiceToText(voiceData);

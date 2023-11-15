@@ -1,4 +1,4 @@
-import main, { captureVoiceInput, transcribeVoiceToText, interactWithAssistant, convertTextToVoice, playAudioOutput, handleError } from './index';
+import { main, captureVoiceInput, transcribeVoiceToText, interactWithAssistant, convertTextToVoice, playAudioOutput, handleError } from './index';
 
 jest.mock('./index');
 
